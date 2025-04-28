@@ -1,11 +1,25 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../store/store'
+import { addHabit } from '../store/habit-Slice'
 
 const AddHabitForm: React.FC = () => {
 
     const [habitName, setHabitName] = React.useState('')
     const [frequency, setFrequency] = React.useState<"daily" | "weekly" | "monthly">('daily')
-  return <form>
+
+    const dispatch = useDispatch<AppDispatch>()
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (habitName.trim()) {
+            dispatch(addHabit({ name: habitName, frequency }))
+            setHabitName('')
+            setFrequency('daily')
+        }
+    }
+  return <form onSubmit={handleSubmit}>
     <Box sx={{
         display: 'flex',
         flexDirection: 'column',
